@@ -27,6 +27,7 @@ TARGET_SCREEN_DENSITY := 420
 
 # Kernel
 TARGET_KERNEL_CONFIG := river_defconfig
+TARGET_PREBUILT_RECOVERY_RAMDISK_CPIO := $(DEVICE_PATH)/recovery/ramdisk-recovery.cpio
 
 # NFC
 BOARD_NFC_CHIPSET := pn553
