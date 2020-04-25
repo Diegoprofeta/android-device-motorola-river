@@ -25,6 +25,11 @@ $(call inherit-product, vendor/havoc/config/common_full_phone.mk)
 # Inherit from river device
 $(call inherit-product, $(LOCAL_PATH)/device.mk)
 
+# Official Havoc-OS
+export HAVOC_BUILD_TYPE := Official
+export HAVOC_MAINTAINER := Andrew Hexen (SyberHexen)
+export HAVOC_GROUP_URL := https://t.me/havoc_river
+
 PRODUCT_BRAND := motorola
 PRODUCT_DEVICE := river
 PRODUCT_MANUFACTURER := motorola
