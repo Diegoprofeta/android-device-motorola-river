@@ -65,6 +65,7 @@ void property_override_device(char const prop[], char const value[], bool add = 
 void vendor_load_device_properties()
 {
     std::string bootsku;
+    std::string carrier;
     std::string device;
 
     const auto set_ro_build_prop = [](const std::string &source,
@@ -80,27 +81,45 @@ void vendor_load_device_properties()
     };
 
     bootsku = GetProperty("ro.boot.hardware.sku", "");
-    if (bootsku == "XT1965-T") {
-        /* T-Mobile REVVLRY+ */
-        property_override_device("ro.build.description", "lake_revvl_n-user 9 PCWS29.83-56-12 ec5de release-keys");
-        property_override_device("persist.vendor.radio.customer_mbns", "tmo_usa_ims_default.mbn");
-        property_override_device("persist.vendor.radio.data_con_rprt", "1");
-        property_override_device("persist.vendor.ims.playout_delay", "10");
-        property_override_device("persist.vendor.ims.cam_sensor_delay", "20");
-        property_override_device("persist.vendor.ims.display_delay", "40");
+    carrier = GetProperty("ro.boot.carrier", "");
+    if (bootsku == "XT1962-1") {
+        /* USA */
+        if (carrier == "fi") {
+            /* Google Fi */
+            property_override_device("ro.build.description", "river_retail-user 10 QPU30.52-23 e548a release-keys");
+            property_override_device("ro.vendor.radio.imei.sv", "14");
+            property_override_device("ro.vendor.radio.ims_version", "TA3.0_IR92_V10.0");
+            property_override_device("persist.vendor.radio.user_agent_supported", "1");
+            for (const auto &source : ro_props_default_source_order) {
+                set_ro_build_prop(source, "fingerprint", "motorola/river_retail/river:10/QPU30.52-23/e548a:user/release-keys");
+                set_ro_product_prop(source, "device", "river");
+                set_ro_product_prop(source, "model", "moto g(7)");
+                set_ro_product_prop(source, "name", "river_retail");
+            }
+        } else {
+            property_override_device("ro.build.description", "river-user 10 QPU30.52-16-2 be43c release-keys");
+            for (const auto &source : ro_props_default_source_order) {
+                set_ro_build_prop(source, "fingerprint", "motorola/river/river:10/QPU30.52-16-2/be43c:user/release-keys");
+                set_ro_product_prop(source, "device", "river");
+                set_ro_product_prop(source, "model", "moto g(7)");
+            }
+        }
+    } else if (bootsku == "XT1962-5") {
+        /* EU/NFC */
+        property_override_device("ro.boot.product.hardware.sku", "nfc");
+        property_override_device("ro.build.description", "river-user 10 QPU30.52-16-2 be43c release-keys");
         for (const auto &source : ro_props_default_source_order) {
-            set_ro_build_prop(source, "fingerprint", "motorola/lake_revvl/lake:9/PCWS29.83-56-12/ec5de:user/release-keys");
-            set_ro_product_prop(source, "device", "lake_n");
-            set_ro_product_prop(source, "model", "REVVLRY+");
-            set_ro_product_prop(source, "name", "lake_revvl_n");
+            set_ro_build_prop(source, "fingerprint", "motorola/river/river:10/QPU30.52-16-2/be43c:user/release-keys");
+            set_ro_product_prop(source, "device", "river");
+            set_ro_product_prop(source, "model", "moto g(7)");
         }
     } else {
-        /* moto g(7) plus (Unlocked) */
-        property_override_device("ro.build.description", "lake-user 10 QPW30.61-21 d18ed release-keys");
+        /* moto g(7) retail */
+        property_override_device("ro.build.description", "river-user 10 QPU30.52-16-2 be43c release-keys");
         for (const auto &source : ro_props_default_source_order) {
-            set_ro_build_prop(source, "fingerprint", "motorola/lake_retail/lake:10/QPW30.61-18/d18ed:user/release-keys");
-            set_ro_product_prop(source, "device", "lake");
-            set_ro_product_prop(source, "model", "moto g(7) plus");
+            set_ro_build_prop(source, "fingerprint", "motorola/river/river:10/QPU30.52-16-2/be43c:user/release-keys");
+            set_ro_product_prop(source, "device", "river");
+            set_ro_product_prop(source, "model", "moto g(7)");
         }
     }
 
